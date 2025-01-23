@@ -10,7 +10,6 @@ import java.util.concurrent.TimeUnit
 object RetrofitClient {
     private fun getOkHttpClient(): OkHttpClient {
 
-        // Logging network requests
         val loggingInterceptor = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }

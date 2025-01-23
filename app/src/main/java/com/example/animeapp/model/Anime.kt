@@ -5,7 +5,8 @@ data class Anime(
     val title: String,
     val episodes: Int?,
     val score: Double?,
-    val images: Image
+    val images: Image,
+    val mal_id: Int
 )
 
 data class Image(

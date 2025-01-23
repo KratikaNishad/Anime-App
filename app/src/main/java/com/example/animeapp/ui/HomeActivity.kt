@@ -1,6 +1,5 @@
 package com.example.animeapp.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -17,7 +16,7 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private val homeViewModel: HomeViewModel by viewModels {
-        HomeViewModelFactory(AnimeRepository(RetrofitClient.apiService)) // Provide the API service
+        HomeViewModelFactory(AnimeRepository(RetrofitClient.apiService))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,20 +24,17 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Set up RecyclerView
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = AnimeAdapter(emptyList()) // Initially empty list
+        val adapter = AnimeAdapter(emptyList(), this)
         binding.recyclerView.adapter = adapter
 
-        // Fetch top anime from the ViewModel and pass the result to the callback
         homeViewModel.getTopAnime { response ->
             if (response.isSuccessful) {
                 val animeList = response.body()?.data ?: emptyList()
-                adapter.updateData(animeList) // Update RecyclerView with fetched data
+                adapter.updateData(animeList)
             } else {
-                Toast.makeText(this, "Failed to load anime", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Failed to load anime details", Toast.LENGTH_SHORT).show()
             }
         }
-
     }
 }
