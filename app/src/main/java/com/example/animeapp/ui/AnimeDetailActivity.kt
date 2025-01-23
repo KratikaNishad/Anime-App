@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.animeapp.databinding.ActivityAnimeDetailBinding
 import com.example.animeapp.network.RetrofitClient
 import com.example.animeapp.repository.AnimeRepository
+import com.example.animeapp.utils.InternetConnectivityCheck
 import com.example.animeapp.viewmodel.HomeViewModel
 import com.example.animeapp.viewmodel.HomeViewModelFactory
 import com.squareup.picasso.Picasso
@@ -24,6 +25,11 @@ class AnimeDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val animeId = intent.getIntExtra("anime_id", 0)
+        if (!InternetConnectivityCheck.isInternetAvailable(this)) {
+            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_LONG).show()
+            return
+        }
+
         homeViewModel.getAnimeDetails(animeId) { response ->
             if (response.isSuccessful) {
                 val animeDetails = response.body()?.data

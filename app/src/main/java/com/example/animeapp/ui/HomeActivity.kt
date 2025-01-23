@@ -9,6 +9,7 @@ import com.example.animeapp.adapter.AnimeAdapter
 import com.example.animeapp.databinding.ActivityHomeBinding
 import com.example.animeapp.repository.AnimeRepository
 import com.example.animeapp.network.RetrofitClient
+import com.example.animeapp.utils.InternetConnectivityCheck
 import com.example.animeapp.viewmodel.HomeViewModel
 import com.example.animeapp.viewmodel.HomeViewModelFactory
 
@@ -27,6 +28,11 @@ class HomeActivity : AppCompatActivity() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         val adapter = AnimeAdapter(emptyList(), this)
         binding.recyclerView.adapter = adapter
+
+        if (!InternetConnectivityCheck.isInternetAvailable(this)) {
+            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_LONG).show()
+            return
+        }
 
         homeViewModel.getTopAnime { response ->
             if (response.isSuccessful) {
